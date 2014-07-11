@@ -1,5 +1,7 @@
 package venson.busTime.modelo;
 
+import java.util.Date;
+
 public class SimpleTime {
 
     private int hour;
@@ -70,6 +72,28 @@ public class SimpleTime {
         }
         return false;
     }
+    
+    /**
+     * Hora Atual
+     * @return Retorna a hora atual
+     */
+    
+    public static SimpleTime atualTime(){
+        SimpleTime atual = new SimpleTime();
+        atual.setToAtualTime();
+        return atual;
+    }
+    
+    /**
+     * Atualiza para a hora atual da máquina
+     */
+    
+    public void setToAtualTime(){
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis());
+        this.hour = date.getHours();
+        this.minute = date.getMinutes();
+    }
 
     /**
      * Representação textual da hora
@@ -79,7 +103,19 @@ public class SimpleTime {
     
     @Override
     public String toString(){
-        return this.hour + ":" + this.minute;
+        
+        String sMinute = String.valueOf(minute);
+        String sHour = String.valueOf(hour);
+        
+        if(minute < 10){
+            sMinute = "0" + minute;
+        }
+        
+        if(hour < 10){
+            sHour = "0" + hour;
+        }
+        
+        return sHour + ":" + sMinute;
     }
 
 }

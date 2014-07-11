@@ -1,5 +1,7 @@
 package venson.busTime.modelo;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Linha {
@@ -11,6 +13,7 @@ public class Linha {
     private List<Horario> listaHorarios;
 
     public Linha() {
+        listaHorarios = new ArrayList();
     }
 
     public String getNome() {
@@ -51,6 +54,45 @@ public class Linha {
 
     public void setListaHorarios(List<Horario> listaHorarios) {
         this.listaHorarios = listaHorarios;
+    }
+
+    public Horario nextBus(String partida) {
+
+        int diaSemana = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        int diaSemanaHorario;
+
+        /*
+         * Adequa o dia da semana ao padrão
+         * 1 - Domingo
+         * 2 - Dia de Semana
+         * 3 - Sábado
+         */
+        if (diaSemana > 1 && diaSemana < 7) {
+            diaSemana = 2;
+        }
+
+        List<Horario> lista = getListByPartida(partida);
+
+        for (Horario h : lista) {
+            diaSemanaHorario = h.getDiaSemana();
+            if (diaSemana == diaSemanaHorario) {
+                if (h.getHora().isAfter(SimpleTime.atualTime())) {
+                    return h;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<Horario> getListByPartida(String partida) {
+        List lista = new ArrayList();
+        for (Horario h : listaHorarios) {
+            if (h.getLocalPartida().equals(partida)) {
+                lista.add(h);
+            }
+        }
+        return lista;
     }
 
 }
