@@ -12,28 +12,32 @@ import java.net.URL;
 
 public class ACTUBusXMLConverter {
 
-    public static void main(String[] args) throws Exception {   
-        
-        String page = getPageFixed();
-        
+    public static void main(String[] args) throws Exception {
+
+        String page = getPage();
+
         //Tratamento 0 - Divide o html e separa os blocos
         String[] regex = page.split("(<font size=\"2\" face=\"Verdana, Arial, Helvetica, sans-serif\">)|(</font>)");
-        
+
+        String nomeLinha = regex[1].replaceAll("</div>\n<center>\n<b><font.*>[0-9]* - ", "");
+        String numeroLinha = regex[1].replaceAll("</div>\n<center>\n<b><font.*>", "");
+        numeroLinha = numeroLinha.replaceAll("\\D", "");
+
         //Tratamento 1 - Retira Tabs
-        for(int i = 0; i < regex.length ; i++){
+        for (int i = 0; i < regex.length; i++) {
             regex[i] = regex[i].replaceAll("\t", "");
         }
-        
+
         //Tratameto 2 - Retira Tags
-        for(int i = 0; i < regex.length ; i++){
+        for (int i = 0; i < regex.length; i++) {
             regex[i] = regex[i].replaceAll("<br>", "");
         }
-        
+
         //Tratamento 3 - Retira Letras
-        for(int i = 0; i < regex.length ; i++){
+        for (int i = 0; i < regex.length; i++) {
             regex[i] = regex[i].replaceAll("[a-zA-Z]\\s", " ");
         }
-        
+
         //Tratamento 4 - Seleciona os horários
         String hTerminalSegunda = regex[11];
         String hBairroSegunda = regex[13];
@@ -41,105 +45,107 @@ public class ACTUBusXMLConverter {
         String hBairroSabado = regex[21];
         String hTerminalDomingo = regex[27];
         String hBairroDomingo = regex[29];
-        
+
         //Tratamento 5 - Divide os horários e cadastra
-        ToXML xml = new ToXML("Quarta Linha - Portinari", 201);
+        ToXML xml = new ToXML(nomeLinha, Integer.valueOf(numeroLinha));
         String[] split;
-        
-        split = hTerminalSegunda.split("\\s");
-        for(String s : split){
-            xml.newElement("horario");
-            xml.newAttr("hora", s);
-            xml.newAttr("partida", "Terminal Central");
-            xml.newAttr("DiaSemana", "2");
-        }
-        
-        split = hBairroSegunda.split("\\s");
-        for(String s : split){
-            xml.newElement("horario");
-            xml.newAttr("hora", s);
-            xml.newAttr("partida", "Bairro");
-            xml.newAttr("DiaSemana", "2");
-        }
-        
-        split = hTerminalSabado.split("\\s");
-        for(String s : split){
-            xml.newElement("horario");
-            xml.newAttr("hora", s);
-            xml.newAttr("partida", "Terminal Central");
-            xml.newAttr("DiaSemana", "7");
-        }
-        
-        split = hBairroSabado.split("\\s");
-        for(String s : split){
-            xml.newElement("horario");
-            xml.newAttr("hora", s);
-            xml.newAttr("partida", "Bairro");
-            xml.newAttr("DiaSemana", "7");
-        }
-        
-        split = hTerminalDomingo.split("\\s");
-        for(String s : split){
-            xml.newElement("horario");
-            xml.newAttr("hora", s);
-            xml.newAttr("partida", "Terminal Central");
-            xml.newAttr("DiaSemana", "1");
-        }
-        
-        split = hBairroDomingo.split("\\s");
-        for(String s : split){
-            xml.newElement("horario");
-            xml.newAttr("hora", s);
-            xml.newAttr("partida", "Bairro");
-            xml.newAttr("DiaSemana", "1");
-        }
-        
-        xml.write();
-        
-        //System.out.println(regex[21]);
-        
-        /*
-        System.out.println(regex[11]);
-        System.out.println("----------------------------------------");
-        System.out.println(regex[13]);
-        System.out.println("----------------------------------------");
-        System.out.println(regex[19]);
-        System.out.println("----------------------------------------");
-        System.out.println(regex[21]);
-        System.out.println("----------------------------------------");
-        System.out.println(regex[27]);
-        System.out.println("----------------------------------------");
-        System.out.println(regex[29]);
-        */
-        
-        /*
-        for(String s : regex){
-            System.out.println("----------------------------------------");
-            System.out.println(s);
-        }*/
-        
-        /*
-        String[] split = regex[14].split("\\s");
-        String horario1 = new String();
-        for(String s : split){
-            if(!s.isEmpty()){
-            horario1 += s.replaceAll("[ %#\"=<>/a-zA-Z\\s]", "") + "\n";
+        if (!hTerminalSegunda.isEmpty()) {
+            split = hTerminalSegunda.split("\\s");
+            for (String s : split) {
+                xml.newElement("horario");
+                xml.newAttr("hora", s);
+                xml.newAttr("partida", "Terminal Central");
+                xml.newAttr("DiaSemana", "2");
             }
         }
-        System.out.println(horario1);
-                */
-        
-        
+        if (!hBairroSegunda.isEmpty()) {
+            split = hBairroSegunda.split("\\s");
+            for (String s : split) {
+                xml.newElement("horario");
+                xml.newAttr("hora", s);
+                xml.newAttr("partida", "Bairro");
+                xml.newAttr("DiaSemana", "2");
+            }
+        }
+        if (!hTerminalSabado.isEmpty()) {
+            split = hTerminalSabado.split("\\s");
+            for (String s : split) {
+                xml.newElement("horario");
+                xml.newAttr("hora", s);
+                xml.newAttr("partida", "Terminal Central");
+                xml.newAttr("DiaSemana", "7");
+            }
+        }
+        if (!hBairroSabado.isEmpty()) {
+            split = hBairroSabado.split("\\s");
+            for (String s : split) {
+                xml.newElement("horario");
+                xml.newAttr("hora", s);
+                xml.newAttr("partida", "Bairro");
+                xml.newAttr("DiaSemana", "7");
+            }
+        }
+        if (!hTerminalDomingo.isEmpty()) {
+            split = hTerminalDomingo.split("\\s");
+            for (String s : split) {
+                xml.newElement("horario");
+                xml.newAttr("hora", s);
+                xml.newAttr("partida", "Terminal Central");
+                xml.newAttr("DiaSemana", "1");
+            }
+        }
+
+        if (!hBairroDomingo.isEmpty()) {
+            split = hBairroDomingo.split("\\s");
+            for (String s : split) {
+                xml.newElement("horario");
+                xml.newAttr("hora", s);
+                xml.newAttr("partida", "Bairro");
+                xml.newAttr("DiaSemana", "1");
+            }
+        }
+
+        xml.write();
+
+        //System.out.println(regex[21]);
+        /*
+         System.out.println(regex[11]);
+         System.out.println("----------------------------------------");
+         System.out.println(regex[13]);
+         System.out.println("----------------------------------------");
+         System.out.println(regex[19]);
+         System.out.println("----------------------------------------");
+         System.out.println(regex[21]);
+         System.out.println("----------------------------------------");
+         System.out.println(regex[27]);
+         System.out.println("----------------------------------------");
+         System.out.println(regex[29]);
+         */
+        /*
+         for(String s : regex){
+         System.out.println("----------------------------------------");
+         System.out.println(s);
+         }*/
+        /*
+         String[] split = regex[14].split("\\s");
+         String horario1 = new String();
+         for(String s : split){
+         if(!s.isEmpty()){
+         horario1 += s.replaceAll("[ %#\"=<>/a-zA-Z\\s]", "") + "\n";
+         }
+         }
+         System.out.println(horario1);
+         */
     }
-    
-    private static String getPage(){
+
+    private static String getPage() {
         URL url;
         InputStream is = null;
         BufferedReader br;
         String line;
 
         try {
-            url = new URL("http://www.actu.com.br/linha.php?codigo_lin=90");
+            url = new URL("http://www.actu.com.br/linha.php?codigo_lin=1");
             is = url.openStream();  // throws an IOException
             br = new BufferedReader(new InputStreamReader(is));
             String page = new String();
@@ -163,18 +169,17 @@ public class ACTUBusXMLConverter {
         }
         return null;
     }
-    
-    
-    private static String getPageFixed() throws FileNotFoundException, IOException{
+
+    private static String getPageFixed() throws FileNotFoundException, IOException {
         File file = new File("/home/venson/Downloads/ACTU - Associação Criciumense de Transporte Urbano.htm");
         BufferedReader buffer = new BufferedReader(new FileReader(file));
         String ret = new String();
         String line;
-       
-        while((line = buffer.readLine()) != null){
+
+        while ((line = buffer.readLine()) != null) {
             ret += line + "\n";
         }
-        
+
         return ret;
     }
 
