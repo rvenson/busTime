@@ -29,31 +29,22 @@
         <div class="row">
             <div class="panel">
                 <div class="large-6 columns">
-                    <h4>Partidas do Terminal Central</h4>
-                    <h:dataTable value="#{mainMB.linha.getListByPartida('Terminal Central')}" var="a">                                       >
-                        <h:column>
-                            <f:facet name="header">Nome</f:facet>
-                                #{a.hora.toString()}
-                        </h:column>
-                        <h:column>
-                        </h:column>
-                    </h:dataTable>
+                    <h5>Segunda à Sexta</h5>
+                    <h:outputText value="#{mainMB.linha.getListaHorariosString('Terminal Central', 2)}" />
+                    <h5>Sábado</h5>
+                    <h:outputText value="#{mainMB.linha.getListaHorariosString('Terminal Central', 7)}" />
+                    <h5>Domingo</h5>
+                    <h:outputText value="#{mainMB.linha.getListaHorariosString('Terminal Central', 1)}" />
                 </div>
-                <div class="large-6 columns ">
-                    <h4>Partidas do Terminal Central</h4>
-                    <h:dataTable value="#{mainMB.linha.getListByPartida('Bairro')}" var="a">
-                        <h:column>
-                            <f:facet name="header">Dia</f:facet>
-                                #{a.diaSemana}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Horário</f:facet>
-                                #{a.hora.toString()}
-                        </h:column>
-                        <h:column>
-                        </h:column>
-                    </h:dataTable>
+                <div class="large-6 columns">
+                    <h5>Segunda à Sexta</h5>
+                    <h:outputText value="#{mainMB.linha.getListaHorariosString('Bairro', 2)}" />
+                    <h5>Sábado</h5>
+                    <h:outputText value="#{mainMB.linha.getListaHorariosString('Bairro', 7)}" />
+                    <h5>Domingo</h5>
+                    <h:outputText value="#{mainMB.linha.getListaHorariosString('Bairro', 1)}" />
                 </div>
+
             </div>
         </div>
     </h:body>

@@ -94,5 +94,15 @@ public class Linha {
         }
         return lista;
     }
+    
+    public String getListaHorariosString(String partida, Integer diaSemana) {
+        String lista = new String();
+        for (Horario h : listaHorarios) {
+            if (h.getLocalPartida().equals(partida) && h.getDiaSemana().equals(diaSemana)) {
+                lista += h.getHora().toString() + " ";
+            }
+        }
+        return lista;
+    }
 
 }

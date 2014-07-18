@@ -12,7 +12,7 @@ import venson.busTime.test.CadastraHorario;
 @RequestScoped
 public class mainMB {
     
-    Linha linha;
+    Linha linha = null;
     Horario terminal;
     Horario bairro;
     List<Horario> lista = new ArrayList();
@@ -26,7 +26,9 @@ public class mainMB {
     }
     
     private void init(){
+        if(linha == null){
         linha = CadastraHorario.init();
+        }
     }
 
     public Linha getLinha() {
