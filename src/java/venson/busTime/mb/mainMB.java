@@ -2,14 +2,12 @@ package venson.busTime.mb;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.annotation.ManagedBean;
 import venson.busTime.modelo.Horario;
 import venson.busTime.modelo.Linha;
 import venson.busTime.test.CadastraHorario;
 
 @ManagedBean
-@RequestScoped
 public class mainMB {
     
     Linha linha = null;
